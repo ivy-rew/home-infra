@@ -36,9 +36,28 @@ setupFiles(){
   fi
 }
 
-sudo apt update && sudo apt upgrade
+localDns(){
+  resolve="/etc/resolv.conf"
+  cp -v "${resolve}" ./resolve.conf.bkp
+  echo "nameserver 127.0.0.1" > "resolve.conf"
+  sudo mv -v "resolve.conf" "$resolve"
+  echo "updated $resolve"
+}
 
-instDocker
-instCompose
-setupFiles
-instPiholeService
+localDhcp(){
+  dhcp="/etc/dhcpcd.conf"
+  cp -v "$dhcp" ./dhcpcd.conf
+  printf "\n#pihole\ninterface eth0\nstatic domain_name_servers=127.0.0.1\n" >> "dhcpcd.conf"
+  sudo mv -v "dhcpcd.conf" "$dhcp"
+  echo "updated $dhcp"
+}
+
+if ! [ "$1" = "test" ]; then
+  sudo apt update && sudo apt upgrade
+  instDocker
+  instCompose
+  setupFiles
+  instPiholeService
+  localDns
+  localDhcp
+fi
