@@ -30,8 +30,10 @@ instPiholeService(){
 }
 
 setupFiles(){
-  dnsLog="$(pwd)/var-log/pihole.log"
+  logDir="$(pwd)/var-log"
+  dnsLog="${logDIR}/pihole.log"
   if ! [ -f "${dnsLog}" ]; then
+    mkdir -p "${logDir}"
     touch "${dnsLog}"
   fi
 }
