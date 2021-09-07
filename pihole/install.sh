@@ -20,12 +20,14 @@ instCompose(){
 }
 
 instPiholeService(){
-  dns="/etc/systemd/system/compose.pihole.service"
+  service="compose.pihole"
+  dns="/etc/systemd/system/${service}.service"
   if ! [ -f "${dns}" ]; then
     echo "INSTALLING pihole SystemD service"
-    sed -e "s|__WORKDIR__|${PWD}|g" pihole.service.template > compose.pihole.service
-    sudo mv compose.pihole.service "${dns}"
-    sudo systemctl enable compose.pihole
+    sed -e "s|__WORKDIR__|${PWD}|g" "${service}.template" > "${service}.service"
+    sudo mv "${service}.service" "${dns}"
+    sudo systemctl enable ${service}
+    sudo systemctl start ${service}
   fi
 }
 
