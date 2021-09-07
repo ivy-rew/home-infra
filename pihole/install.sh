@@ -57,10 +57,20 @@ localDhcp(){
   echo "updated $dhcp"
 }
 
+piholeAlias(){
+  hasAlias=`alias | grep pihole`
+  if [ - "${hasAlias}" ]; then
+    piCmd="docker exec -it $(docker ps | grep pihole | awk '{ print $1 }') pihole"
+    aliases="$HOME/.bash_aliases"
+    echo "alias pihole=\"${piCmd}\"" >> "${aliases}"
+    . "${aliases}"
+  fi
+}
+
 piholePass(){
-  containerId=$(docker container ls -l | awk '{ print $1 }' | awk '(NR>1)')
+  piholeAlias #setup container hock
   echo "Please set the pihole webfrontend password:"
-  docker exec -it ${containerId} pihole -a -p
+  pihole -a -p
 }
 
 if ! [ "$1" = "test" ]; then
@@ -71,5 +81,6 @@ if ! [ "$1" = "test" ]; then
   instPiholeService
   localDns
   localDhcp
+  piholeAlias
   piholePass
 fi
