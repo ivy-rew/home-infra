@@ -58,7 +58,7 @@ localDhcp(){
 }
 
 piholePass(){
-  containerId='$(docker container ls -l | awk "{ print $1 }" | awk "(NR>1)")'
+  containerId=$(docker container ls -l | awk '{ print $1 }' | awk '(NR>1)')
   echo "Please set the pihole webfrontend password:"
   docker exec -it ${containerId} pihole -a -p
 }
