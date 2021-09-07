@@ -28,6 +28,7 @@ instPiholeService(){
     sudo mv "${service}.service" "${dns}"
     sudo systemctl enable ${service}
     sudo systemctl start ${service}
+    sleep 3 # mini time to start img resolving
   fi
 }
 
@@ -56,6 +57,12 @@ localDhcp(){
   echo "updated $dhcp"
 }
 
+piholePass(){
+  containerId='$(docker container ls -l | awk "{ print $1 }" | awk "(NR>1)")'
+  echo "Please set the pihole webfrontend password:"
+  docker exec -it ${containerId} pihole -a -p
+}
+
 if ! [ "$1" = "test" ]; then
   sudo apt update && sudo apt upgrade
   instDocker
@@ -64,4 +71,5 @@ if ! [ "$1" = "test" ]; then
   instPiholeService
   localDns
   localDhcp
+  piholePass
 fi
