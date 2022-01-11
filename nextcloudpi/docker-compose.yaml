@@ -1,0 +1,12 @@
+services:
+  nextcloudpi:
+    image: ownyourbits/nextcloudpi-armhf
+    command: "${IP}"
+    ports:
+     - "9080:80"
+     - "9443:443"
+     - "9943:4443"
+    volumes:
+     - ./data:/data
+     - /etc/localtime:/etc/localtime:ro
+    container_name: nextcloudpi
