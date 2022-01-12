@@ -9,6 +9,7 @@ instDocker(){
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
   fi
+  echo "DOCKER ready"
 }
 
 instCompose(){
@@ -19,9 +20,13 @@ instCompose(){
     sudo apt install -y python3 python3-pip
     sudo pip3 install docker-compose
   fi
+  echo "DOCKER-COMPOSE ready"
 }
 
 instComposeService(){
+  instDocker
+  instCompose
+
   service="$1" #technical name
   serviceName="$2" # human readable
   qualified="/etc/systemd/system/${service}.service"
@@ -37,5 +42,6 @@ instComposeService(){
     sudo systemctl start ${service}
     sleep 3 # mini time to start img resolving
   fi
+  echo "SERVICE ${service} ready"
 }
 
