@@ -8,5 +8,9 @@ services:
      - "9943:4443"
     volumes:
      - ./data:/data
-     - /etc/localtime:/etc/localtime:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 400M
     container_name: nextcloudpi
