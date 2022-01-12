@@ -1,6 +1,6 @@
 
 [Unit]
-Description=Pihole DNS
+Description=__SERVICE__
 Requires=docker.service
 After=docker.service
 
