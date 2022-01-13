@@ -4,13 +4,13 @@ services:
     command: "${IP}"
     ports:
      - "9080:80"
-     - "9443:443"
-     - "9943:4443"
+     - "443:443"
+     - "4443:4443"
     volumes:
      - ./data:/data
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '0.60'
           memory: 400M
     container_name: nextcloudpi
