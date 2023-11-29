@@ -1,0 +1,5 @@
+
+# speed-pi: low resource
+dtoverlay=pi3-disable-wifi
+dtoverlay=pi3-disable-bt
+
