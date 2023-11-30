@@ -5,6 +5,9 @@ dockerDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 instDocker(){
   if ! [ -x "$(command -v docker )" ]; then
     echo "INSTALLING docker"
+    if ! [ -x "$(command -v curl )" ]; then
+      sudo apt install -y curl
+    fi
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
