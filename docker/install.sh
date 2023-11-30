@@ -12,20 +12,8 @@ instDocker(){
   echo "DOCKER ready"
 }
 
-instCompose(){
-  if ! [ -x "$(command -v docker-compose )" ]; then
-    echo "INSTALLING docker-compose"
-    sudo apt install -y libffi-dev libssl-dev
-    sudo apt install -y python3-dev
-    sudo apt install -y python3 python3-pip
-    sudo pip3 install docker-compose
-  fi
-  echo "DOCKER-COMPOSE ready"
-}
-
 instComposeService(){
   instDocker
-  instCompose
 
   service="$1" #technical name
   serviceName="$2" # human readable
