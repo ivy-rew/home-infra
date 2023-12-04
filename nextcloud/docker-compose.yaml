@@ -12,10 +12,13 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password
+      - MYSQL_PASSWORD=/run/secrets/db_password
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
+    secrets:
+      - db_root_password
+      - db_password
 
   app:
     image: nextcloud:fpm
@@ -25,10 +28,12 @@ services:
     volumes:
       - nextcloud:/var/www/html
     environment:
-      - MYSQL_PASSWORD=
+      - MYSQL_PASSWORD=/run/secrets/db_password
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=db
+    secrets:
+      - db_password
 
   web:
     image: nginx
@@ -41,3 +46,9 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     volumes_from:
       - app
+
+secrets:
+   db_password:
+     file: next_db_password.txt
+   db_root_password:
+     file: next_db_root_password.txt
