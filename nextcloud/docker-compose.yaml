@@ -21,7 +21,7 @@ services:
       - db_password
 
   app:
-    image: nextcloud:fpm
+    image: nextcloud:13.0-fpm
     restart: always
     links:
       - db
