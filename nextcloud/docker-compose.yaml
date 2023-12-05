@@ -11,6 +11,7 @@ services:
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
     volumes:
       - db:/var/lib/mysql
+      - ./db.bkp/:/docker-entrypoint-initdb.d/
     environment:
       - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password
       - MYSQL_PASSWORD=/run/secrets/db_password
@@ -27,6 +28,7 @@ services:
       - db
     volumes:
       - nextcloud:/var/www/html
+      - ./data:/var/www/html/data
     environment:
       - MYSQL_PASSWORD=/run/secrets/db_password
       - MYSQL_DATABASE=nextcloud
