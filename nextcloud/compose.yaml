@@ -7,7 +7,6 @@ volumes:
 services:
   db:
     image: mariadb:10.6
-    restart: always
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
     volumes:
       - db:/var/lib/mysql
@@ -23,7 +22,6 @@ services:
 
   app:
     image: nextcloud:27-fpm
-    restart: always
     links:
       - db
     volumes:
@@ -39,7 +37,6 @@ services:
 
   web:
     image: nginx
-    restart: always
     ports:
       - 8443:443
     links:
