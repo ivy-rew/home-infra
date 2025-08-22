@@ -24,6 +24,7 @@ bkpCal() {
   echo "copying ${ics}"
   calUri="${ncBaseUri}/remote.php/dav/calendars/${principal}/${calendar}?export"
   curl -u "${auth}" -k -o "${ics}" "${calUri}"
+  head "${ics}"
 }
 
 # execute
