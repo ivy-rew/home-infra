@@ -11,6 +11,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.60'
-          memory: 400M
+          cpus: '0.80'
+          memory: 300M
     container_name: nextcloudpi
