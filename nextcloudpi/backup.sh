@@ -4,6 +4,14 @@ ncBaseUri="https://192.168.1.3" # nextCloud base URL
 
 # add to your environment in advance e.g.
 # export ncUser=myUser && export ncPass=myPass
+requireEnv() {
+  if [ -z "${!1}" ]; then
+    echo "missing ENV variable '$1'"
+    exit 1
+  fi
+}
+requireEnv ncUser
+requireEnv ncPass
 auth="${ncUser}:${ncPass}"
 
 # create a local copy of your .ICS 
