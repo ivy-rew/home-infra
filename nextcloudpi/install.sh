@@ -14,6 +14,7 @@ nextConfigAlias(){
     aliases="$HOME/.bash_aliases"
     echo 'alias ncp="docker exec -it nextcloudpi"' >> "${aliases}"
     echo 'alias ncp-config="ncp ncp-config"' >> "${aliases}"
+    echo 'alias occ="ncp sudo -u www-data php /data/nextcloud/occ"' >> "${aliases}"
     . "${aliases}" # re-load
   fi
   echo "ALIAS ncp... ready"
