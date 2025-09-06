@@ -1,0 +1,80 @@
+services:
+  db:
+    image: yobasystems/alpine-mariadb:11.4.5-05-armhf
+    container_name: nextcloud_db
+    #restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db.bkp/:/docker-entrypoint-initdb.d/
+      - ./db/lowmem.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./mysql.bkp:/tmp/mysql.bkp
+    #mem_limit: 256m
+    deploy:
+      resources:
+        limits:
+          cpus: '0.40'
+          memory: 256m
+    #command: --skip-grant-tables
+    networks:
+      - ncnet
+    environment:
+      - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password
+      - MYSQL_PASSWORD=/run/secrets/db_password
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    secrets:
+      - db_root_password
+      - db_password
+
+  app:
+    image: nextcloud:25-fpm-alpine
+    #restart: always
+    #links:
+    #  - db
+    networks:
+     - ncnet
+    volumes:
+      - nextcloud:/var/www/html
+      - ./data/:/var/www/html/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.40'
+          memory: 256m
+    environment:
+      - MYSQL_PASSWORD=/run/secrets/db_password
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+    secrets:
+      - db_password
+
+  web:
+    image: nginx:stable-alpine
+    #restart: always
+    ports:
+      - 8080:80
+      - 443:443
+    networks:
+      - ncnet
+    #links:
+    #  - app
+    volumes:
+      - ./web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./web/certs/:/etc/nginx/certs/:ro
+    volumes_from:
+      - app
+
+networks:
+  ncnet:
+    driver: bridge
+
+volumes:
+  db_data:
+  nextcloud:
+
+secrets:
+  db_password:
+    file: next_db_password.txt
+  db_root_password:
+    file: next_db_root_password.txt
