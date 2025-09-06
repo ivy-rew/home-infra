@@ -1,0 +1,30 @@
+services:
+  db:
+    image: yobasystems/alpine-mariadb:10.6.12-armhf
+    container_name: nextcloud_db
+    #restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db.bkp/:/docker-entrypoint-initdb.d/
+      - ./db/lowmem.cnf:/etc/mysql/conf.d/custom.cnf:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '0.40'
+          memory: 256m
+    command: --skip-grant-tables
+    environment:
+      - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password
+      - MYSQL_PASSWORD=/run/secrets/db_password
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    secrets:
+      - db_root_password
+      - db_password
+volumes:
+  db_data:
+secrets:
+  db_password:
+    file: next_db_password.txt
+  db_root_password:
+    file: next_db_root_password.txt
