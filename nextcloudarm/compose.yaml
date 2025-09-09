@@ -34,7 +34,7 @@ services:
       - nextcloud:/var/www/html
       - ./data/:/var/www/html/data
     # privileged; wrong time/unable to ping workaround
-    # privileged: true
+    privileged: true
     deploy:
       resources:
         limits:
