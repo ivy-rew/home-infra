@@ -26,7 +26,7 @@ services:
       - db_password
 
   app:
-    image: nextcloud:25-fpm-alpine
+    image: nextcloud:31-fpm-alpine
     #restart: always
     networks:
      - ncnet
