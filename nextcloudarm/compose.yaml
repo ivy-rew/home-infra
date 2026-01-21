@@ -10,7 +10,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.40'
+          cpus: '1.80'
           memory: 256m
     # skip-grant to get full-access without auth
     #command: --skip-grant-tables
